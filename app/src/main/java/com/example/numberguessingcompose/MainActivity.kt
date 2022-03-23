@@ -36,34 +36,34 @@ var start = true
 
 @Composable
 fun NumberGuessing() {
+    val head = remember { mutableStateOf("Try to guess the number i'm thinking of from 1-1000!") }
     val text = remember { mutableStateOf("") }
     val enter = remember { mutableStateOf("") }
     val answer = remember { mutableStateOf(TextFieldValue()) }
 
     fun reset() {
         random = Random.nextInt(1, 1000)
-        text.value = "Try to guess the number i'm thinking of from 1-1000!"
+        text.value = ""
         start = true
-       click = 0
+        click = 0
     }
 
     fun algorithm() {
         if (start) {
-            if (answer.value.text.isEmpty()) {
-                text.value = "enter number"
-            } else {
+            if (answer.value.text.isNotEmpty()) {
+                click++
                 if (answer.value.text.toInt() < random) {
                     text.value = "Your number is too low"
-                    click++
 
                 } else if (answer.value.text.toInt() > random) {
                     text.value = "Your number is too high"
-                    click++
 
                 } else {
                     text.value = "Congratulation, your number is correct. You use $click time(s)"
                     start = false
                 }
+            } else {
+                text.value = "enter number"
             }
         } else {
             reset()
@@ -71,14 +71,26 @@ fun NumberGuessing() {
     }
 
 
-    Column()
-    {   Text( text.value,
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    )
+
+    {   Text( head.value,
         fontSize = 20.sp,
         textAlign = TextAlign.Center,
         modifier = Modifier
-            .padding(8.dp)
+            .padding(20.dp)
             .fillMaxWidth()
     )
+        Text( text.value,
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxWidth()
+    )
+
         if(start) {
             TextField(
                 value = answer.value,
@@ -89,7 +101,6 @@ fun NumberGuessing() {
 
             )
         }
-
 
         Button( onClick = { algorithm() } ) {
             if(start) {
