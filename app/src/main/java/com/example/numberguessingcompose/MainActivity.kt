@@ -68,13 +68,17 @@ fun NumberGuessing() {
         } else {
             reset()
         }
-
-
     }
 
 
     Column()
-    {
+    {   Text( text.value,
+        fontSize = 20.sp,
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+    )
         if(start) {
             TextField(
                 value = answer.value,
@@ -87,9 +91,17 @@ fun NumberGuessing() {
         }
 
 
-
+        Button( onClick = { algorithm() } ) {
+            if(start) {
+                enter.value = "Enter"
+                Text(enter.value)
+            } else{
+                enter.value = "Play again"
+                Text(enter.value)
+            }
 
         }
 
 
     }
+}
